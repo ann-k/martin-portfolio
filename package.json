@@ -21,6 +21,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@types/matter-js": "^0.19.6"
+    "@types/matter-js": "^0.19.6",
+    "@types/node": "^20.12.12"
   }
 }
