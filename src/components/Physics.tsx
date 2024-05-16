@@ -102,7 +102,7 @@ export function Physics() {
 
       setTimeout(() => {
         Render.stop(render);
-        Composite.clear(engine.world);
+        Composite.clear(engine.world, false);
         Engine.clear(engine);
         render.canvas.remove();
       }, 1000);
