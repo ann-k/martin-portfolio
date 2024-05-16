@@ -21,7 +21,7 @@ export function Main() {
 
   return (
     <>
-      <Controls onClick={() => onClick(1)} onSecondClick={() => onClick(2)} />
+      <Controls onClick={onClick} />
       {typeof activeProject === "number" && <Physics />}
     </>
   );

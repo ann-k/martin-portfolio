@@ -1,6 +1,37 @@
 import { useEffect } from "react";
 import Matter from "matter-js";
 
+const boxesProperties = [
+  {
+    width: 256,
+    height: 256,
+    x: 500,
+    y: 0,
+    src: "/martin-portfolio/images/1.jpeg",
+  },
+  {
+    width: 150,
+    height: 92,
+    x: 550,
+    y: -50,
+    src: "/martin-portfolio/images/2.jpeg",
+  },
+  {
+    width: 150,
+    height: 156,
+    x: 200,
+    y: 0,
+    src: "/martin-portfolio/images/3.jpeg",
+  },
+  {
+    width: 240,
+    height: 166,
+    x: 600,
+    y: -50,
+    src: "/martin-portfolio/images/4.jpeg",
+  },
+];
+
 export function Physics() {
   useEffect(() => {
     const Engine = Matter.Engine,
@@ -25,27 +56,20 @@ export function Physics() {
     render.options.background = "white";
 
     // Create boxes and ground
-    const boxA = Bodies.rectangle(400, 0, 256, 256, {
-      render: {
-        sprite: {
-          texture: "/martin-portfolio/images/1.jpeg",
-          xScale: 1,
-          yScale: 1,
+    const boxes = boxesProperties.map((b) =>
+      Bodies.rectangle(b.x, b.y, b.width, b.height, {
+        render: {
+          sprite: {
+            texture: b.src,
+            xScale: 1,
+            yScale: 1,
+          },
         },
-      },
-    });
-    const boxB = Bodies.rectangle(450, 50, 256, 256, {
-      render: {
-        sprite: {
-          texture: "/martin-portfolio/images/1.jpeg",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
+      })
+    );
     const ground = Bodies.rectangle(
       window.innerWidth / 2,
-      window.innerHeight - 100,
+      window.innerHeight,
       window.innerWidth,
       30,
       { isStatic: true }
@@ -70,7 +94,7 @@ export function Physics() {
     });
 
     // Add ground and boxes to world
-    Composite.add(engine.world, [ground, boxA, boxB]);
+    Composite.add(engine.world, [ground, ...boxes]);
 
     // Cleanup
     return () => {
