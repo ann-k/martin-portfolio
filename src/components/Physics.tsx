@@ -34,11 +34,15 @@ const boxesProperties = [
 
 export function Physics() {
   useEffect(() => {
-    const Engine = Matter.Engine,
-      Render = Matter.Render,
-      Runner = Matter.Runner,
-      Bodies = Matter.Bodies,
-      Composite = Matter.Composite;
+    const {
+      Engine,
+      Render,
+      Runner,
+      Bodies,
+      Composite,
+      MouseConstraint,
+      Mouse,
+    } = Matter;
 
     // Create an engine
     const engine = Engine.create();
@@ -95,6 +99,18 @@ export function Physics() {
 
     // Add ground and boxes to world
     Composite.add(engine.world, [ground, ...boxes]);
+
+    // Create canvas mouse
+    const canvasMouse = Mouse.create(canvas);
+
+    // Create mouse constraint
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse: canvasMouse,
+    });
+
+    Composite.add(engine.world, mouseConstraint);
+
+    render.mouse = canvasMouse;
 
     // Cleanup
     return () => {
