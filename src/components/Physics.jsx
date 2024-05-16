@@ -31,7 +31,7 @@ export function Physics() {
     // run the engine
     Runner.run(runner, engine);
 
-    // create two boxes and a ground
+    // create boxes and ground
     var boxA = Bodies.rectangle(400, 200, 256, 256, {
       render: {
         sprite: { texture: "/martin-portfolio/images/1.jpeg" },
@@ -42,7 +42,13 @@ export function Physics() {
         sprite: { texture: "/martin-portfolio/images/1.jpeg" },
       },
     });
-    var ground = Bodies.rectangle(400, 610, 810, 30, { isStatic: true });
+    var ground = Bodies.rectangle(
+      window.innerWidth / 2,
+      window.innerHeight,
+      window.innerWidth,
+      30,
+      { isStatic: true }
+    );
 
     // add all of the bodies to the world
     Composite.add(engine.world, [boxA, boxB, ground]);
