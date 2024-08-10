@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Main } from '../components/Main';
+---
+
+<Layout title="Portfolio">
+	{import.meta.env.PUBLIC_PHYSICS ? (
+		<main>
+			<Main client:only="react" />
+		</main>
+	) : (
+		null
+	)}
+</Layout>
+
+
