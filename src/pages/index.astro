@@ -6,7 +6,7 @@ import Layout from "../layouts/Layout.astro";
   body {
     display: grid;
     align-content: space-between;
-    row-gap: 24px;
+    row-gap: 95px;
 
     width: 100vw;
     min-height: 100vh;
@@ -23,6 +23,16 @@ import Layout from "../layouts/Layout.astro";
     line-height: 1;
 
     background-color: #ededed;
+  }
+
+  @media screen and (max-width: 648px) {
+    body {
+      font-size: 38px;
+    }
+  }
+
+  .link {
+    text-decoration: underline;
   }
 
   footer {
@@ -81,6 +91,7 @@ import Layout from "../layouts/Layout.astro";
     height: 91px;
     font-size: 32px;
     line-height: 36px;
+    text-decoration: none;
   }
 </style>
 
@@ -93,10 +104,10 @@ import Layout from "../layouts/Layout.astro";
 
   <footer>
     <div class="footer-item" id="email">
-      <a>martin@lezhen.in</a>
+      <a class="link">martin@lezhen.in</a>
     </div>
     <div class="footer-item" id="cta">
-      <a>ПОРАБОТАЕМ?</a>
+      <a class="link">ПОРАБОТАЕМ?</a>
     </div>
     <div class="footer-item" id="socials-group">
       <a class="social">IG</a>
