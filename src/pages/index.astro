@@ -1,16 +1,67 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <style>
+  body {
+    display: grid;
+    align-content: space-between;
+    row-gap: 24px;
 
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 
+    padding: 50px;
+    box-sizing: border-box;
+
+    font-size: 62px;
+    line-height: 1;
+    background-color: #ededed;
+  }
+
+  footer {
+    display: grid;
+    justify-content: space-between;
+    grid-auto-flow: column;
+    column-gap: 24px;
+  }
+
+  .socials-group {
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+  }
+
+  .social {
+    display: flex;
+    place-content: center;
+    place-items: center;
+
+    background-color: #d9d9d9;
+    border-radius: 100%;
+    width: 91px;
+    height: 91px;
+    font-size: 32px;
+    line-height: 36px;
+  }
 </style>
 
 <Layout title="">
-	<main>
-		
-	</main>
+  <main>
+    Мартин Леженин — графический дизайнер, медиахудожник, куратор, арт-директор,
+    педагог, креативный директор, бренд-директор, и основатель креативного бюро
+    Whale Studio.
+  </main>
+
+  <footer>
+    <a>martin@lezhen.in</a>
+    <a>ПОРАБОТАЕМ?</a>
+    <div class="socials-group">
+      <a class="social">IG</a>
+      <a class="social">LI</a>
+      <a class="social">TG</a>
+    </div>
+  </footer>
 </Layout>
-
-
