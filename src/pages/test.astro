@@ -1,28 +1,28 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Main } from '../components/Main';
+import Layout from "../layouts/Layout.astro";
+import { Main } from "../components/Main";
 ---
 
 <style is:global>
-	* {
-		margin: 0;
-	}
-	html {
-		font-family: system-ui, sans-serif;
-	}
-	body {
-		width: 100vw;
-		height: 100vh;
-		overflow: hidden;
-	}
+  * {
+    margin: 0;
+  }
+  html {
+    font-family: system-ui, sans-serif;
+  }
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 </style>
 
 <Layout title="Portfolio">
-	{import.meta.env.PUBLIC_PHYSICS ? (
-		<main>
-			<Main client:only="react" />
-		</main>
-	) : (
-		null
-	)}
+  {
+    import.meta.env.PUBLIC_PHYSICS ? (
+      <main>
+        <Main client:only="react" />
+      </main>
+    ) : null
+  }
 </Layout>

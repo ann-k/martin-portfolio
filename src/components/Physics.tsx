@@ -69,14 +69,14 @@ export function Physics() {
             yScale: 1,
           },
         },
-      })
+      }),
     );
     const ground = Bodies.rectangle(
       window.innerWidth / 2,
       window.innerHeight,
       window.innerWidth,
       30,
-      { isStatic: true }
+      { isStatic: true },
     );
 
     // Run the renderer
