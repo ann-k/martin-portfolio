@@ -34,6 +34,7 @@ import Layout from "../layouts/Layout.astro";
 
   .link {
     text-decoration: underline;
+    color: inherit;
   }
 
   footer {
@@ -93,6 +94,7 @@ import Layout from "../layouts/Layout.astro";
     font-size: 32px;
     line-height: 36px;
     text-decoration: none;
+    color: inherit;
   }
 </style>
 
@@ -105,15 +107,14 @@ import Layout from "../layouts/Layout.astro";
 
   <footer>
     <div class="footer-item" id="email">
-      <a class="link">martin@lezhen.in</a>
+      <a class="link" href="mailto:martin@lezhen.in">martin@lezhen.in</a>
     </div>
-    <div class="footer-item" id="cta">
-      <a class="link">ПОРАБОТАЕМ?</a>
-    </div>
+    <div class="footer-item" id="cta">ПОРАБОТАЕМ?</div>
     <div class="footer-item" id="socials-group">
-      <a class="social">IG</a>
-      <a class="social">LI</a>
-      <a class="social">TG</a>
+      <a class="social" href="https://www.instagram.com/lezhenim/">IG</a>
+      <a class="social" href="https://www.linkedin.com/in/martinlezhenin/">LI</a
+      >
+      <a class="social" href="https://www.t.me/votpravda">TG</a>
     </div>
   </footer>
 </Layout>
