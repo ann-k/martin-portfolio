@@ -16,7 +16,7 @@ const { title } = Astro.props;
     <link
       rel="icon"
       type="image/svg+xml"
-      href=`${import.meta.env.URL_BASE}/favicon.svg`
+      href=`${import.meta.env.BASE_URL}favicon.svg`
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -32,7 +32,7 @@ const { title } = Astro.props;
   }
   @font-face {
     font-family: "Markin Sans Mono 10";
-    src: url(`${import.meta.env.URL_BASE}/fonts/MarkinSansMono10.woff2`)
+    src: url(`${import.meta.env.BASE_URL}fonts/MarkinSansMono10.woff2`)
       format("woff2");
     font-weight: 400;
     font-style: normal;
