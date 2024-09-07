@@ -2,7 +2,7 @@
 import Document from "./Document.astro";
 
 interface Props {
-  locale: "ru" | "en";
+  locale?: "ru" | "en";
 }
 
 const { locale = "en" } = Astro.props;
