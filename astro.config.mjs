@@ -10,5 +10,7 @@ export default defineConfig({
   i18n: {
     defaultLocale: "en",
     locales: ["en", "ru"],
+    fallback: { ru: "en" },
+    falbackType: "rewrite",
   },
 });
