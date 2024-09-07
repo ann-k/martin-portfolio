@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Document from "../layouts/Document.astro";
 import { Main } from "../components/Main";
 ---
 
@@ -17,7 +17,7 @@ import { Main } from "../components/Main";
   }
 </style>
 
-<Layout title="Portfolio">
+<Document title="Portfolio">
   {
     import.meta.env.PUBLIC_PHYSICS ? (
       <main>
@@ -25,4 +25,4 @@ import { Main } from "../components/Main";
       </main>
     ) : null
   }
-</Layout>
+</Document>
