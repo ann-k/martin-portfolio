@@ -1,4 +1,6 @@
-export const mySketch = (p) => {
+import type pType from "p5";
+
+export const mySketch = (p: pType) => {
   let maxSize = 500;
   let wspeed = 1.66;
   let hspeed = 1.33;
