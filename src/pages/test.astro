@@ -1,6 +1,6 @@
 ---
 import Document from "../layouts/Document.astro";
-import { Main } from "../components/Main";
+import { Physics } from "../components/Physics";
 ---
 
 <style is:global>
@@ -21,7 +21,7 @@ import { Main } from "../components/Main";
   {
     import.meta.env.PUBLIC_PHYSICS ? (
       <main>
-        <Main client:only="react" />
+        <Physics client:only="react" />
       </main>
     ) : null
   }

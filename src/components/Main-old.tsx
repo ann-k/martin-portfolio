@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Physics } from "./Physics";
+import { Physics } from "./Physics-old";
 import { Controls } from "./Controls";
 
 export function Main() {
