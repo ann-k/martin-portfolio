@@ -155,20 +155,22 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         })}
         {locale === "en" ? (
           <div>
-            Martin Lezhenin is a <a>graphic designer</a>, <a>media artist</a>,
-            curator, art director, teacher, creative director, brand director,
-            and founder of the creative bureau Whale Studio.
+            Martin Lezhenin is a <a className="link">graphic designer</a>,{" "}
+            <a className="link">media artist</a>, curator, art director,
+            teacher, creative director, brand director, and founder of the
+            creative bureau Whale Studio.
           </div>
         ) : (
           <div>
-            Мартин Леженин — <a>графический дизайнер</a>, <a>медиахудожник</a>,
-            куратор, арт-директор, педагог, креативный директор, бренд-директор,
-            и основатель креативного бюро Whale Studio.
+            Мартин Леженин — <a className="link">графический дизайнер</a>,{" "}
+            <a className="link">медиахудожник</a>, куратор, арт-директор,
+            педагог, креативный директор, бренд-директор, и основатель
+            креативного бюро Whale Studio.
           </div>
         )}
       </main>
 
-      <footer>
+      <footer className="footer">
         <div className="footer-item" id="email">
           <a className="link" href="mailto:martin@lezhen.in">
             martin@lezhen.in

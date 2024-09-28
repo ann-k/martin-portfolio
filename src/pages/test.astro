@@ -1,6 +1,5 @@
 ---
 import Document from "../layouts/Document.astro";
-import Layout from "../layouts/Physics-layout.astro";
 
 import { Physics } from "../components/Physics";
 
@@ -15,18 +14,120 @@ const { locale = "en" } = Astro.props;
     font-family: system-ui, sans-serif;
   }
   body {
+    display: grid;
+    align-content: space-between;
+    row-gap: 95px;
+
     width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: 50px;
+    box-sizing: border-box;
+
+    font-family: "Markin Sans Mono 10", system-ui, "Segoe UI", Roboto, Helvetica,
+      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    text-transform: uppercase;
+    font-size: 62px;
+    line-height: 1;
+
+    background-color: #ededed;
+  }
+
+  @media screen and (max-width: 648px) {
+    body {
+      font-size: 38px;
+      padding: 30px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    body {
+      font-size: 32px;
+      padding: 20px;
+    }
+  }
+
+  .link {
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 24px;
+    row-gap: 44px;
+  }
+
+  .footer-item {
+    display: flex;
+  }
+
+  #socials-group {
+    flex-direction: row;
+    column-gap: 24px;
+    row-gap: 44px;
+  }
+
+  @media screen and (max-width: 1479px) {
+    #email {
+      order: 2;
+    }
+    #cta {
+      order: 1;
+      width: 100%;
+    }
+    #socials-group {
+      order: 3;
+    }
+  }
+
+  @media screen and (max-width: 1034px) {
+    .footer-item {
+      width: 100%;
+    }
+
+    #email {
+      order: 3;
+    }
+    #socials-group {
+      order: 2;
+    }
+  }
+
+  .social {
+    display: flex;
+    place-content: center;
+    place-items: center;
+
+    background-color: #d9d9d9;
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+    font-size: 32px;
+    line-height: 36px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media screen and (max-width: 648px) {
+    .social {
+      width: 70px;
+      height: 70px;
+    }
   }
 </style>
 
-<Document title="Portfolio">
+<Document title={locale === "en" ? "Martin Lezhenin" : "Мартин Леженин"}>
   {
     import.meta.env.PUBLIC_PHYSICS ? (
-      <Layout>
-        <Physics client:only="react" locale={locale} />
-      </Layout>
+      <Physics client:only="react" locale={locale} />
     ) : null
   }
 </Document>
