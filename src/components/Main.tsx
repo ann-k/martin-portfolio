@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { Physics } from "./Physics-old";
-import { Controls } from "./Controls";
+import { Physics } from "./Physics";
 
 export function Main() {
   const [alreadyDropped, setAlreadyDropped] = useState(false);
@@ -21,7 +20,13 @@ export function Main() {
 
   return (
     <>
-      <Controls onClick={onClick} />
+      {[...Array(10).keys()].map((n) => {
+        return (
+          <button key={n} onClick={() => onClick(n)}>
+            картинки {n}
+          </button>
+        );
+      })}
       {typeof activeProject === "number" && <Physics />}
     </>
   );
