@@ -1,5 +1,7 @@
 ---
 import Document from "../layouts/Document.astro";
+import Layout from "../layouts/Physics-layout.astro";
+
 import { Main } from "../components/Main";
 ---
 
@@ -21,7 +23,9 @@ import { Main } from "../components/Main";
   {
     import.meta.env.PUBLIC_PHYSICS ? (
       <main>
-        <Main client:only="react" />
+        <Layout>
+          <Main client:only="react" />
+        </Layout>
       </main>
     ) : null
   }
