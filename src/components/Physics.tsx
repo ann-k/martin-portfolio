@@ -89,6 +89,9 @@ export function Physics() {
     const canvas = document.getElementsByTagName("canvas")[0];
     canvas.style.width = "100vw";
     canvas.style.height = "100vh";
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
