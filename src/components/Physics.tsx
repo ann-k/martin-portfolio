@@ -33,17 +33,10 @@ const boxesProperties = [
 ];
 
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
-  useEffect(() => {
-    const {
-      Engine,
-      Render,
-      Runner,
-      Bodies,
-      Composite,
-      MouseConstraint,
-      Mouse,
-    } = Matter;
+  const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
+    Matter;
 
+  useEffect(() => {
     // Create an engine
     const engine = Engine.create();
 
@@ -92,6 +85,7 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     canvas.style.position = "fixed";
     canvas.style.top = "0";
     canvas.style.left = "0";
+    canvas.style.pointerEvents = "none";
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -146,19 +140,18 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   return (
     <>
       <main>
-        {[...Array(10).keys()].map((n) => {
-          return (
-            <button key={n} onClick={() => onClick(n)}>
-              картинки {n}
-            </button>
-          );
-        })}
         {locale === "en" ? (
           <div>
-            Martin Lezhenin is a <a className="link">graphic designer</a>,{" "}
-            <a className="link">media artist</a>, curator, art director,
-            teacher, creative director, brand director, and founder of the
-            creative bureau Whale Studio.
+            Martin Lezhenin is a{" "}
+            <a className="link" onClick={() => onClick(0)}>
+              graphic designer
+            </a>
+            ,{" "}
+            <a className="link" onClick={() => onClick(1)}>
+              media artist
+            </a>
+            , curator, art director, teacher, creative director, brand director,
+            and founder of the creative bureau Whale Studio.
           </div>
         ) : (
           <div>
@@ -194,7 +187,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
           </a>
         </div>
       </footer>
-      {typeof activeProject === "number" && <Physics locale={locale} />}
     </>
   );
 }
