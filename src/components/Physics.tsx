@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Matter from "matter-js";
 
 const boxesProperties = [
@@ -32,7 +32,7 @@ const boxesProperties = [
   },
 ];
 
-export function Physics() {
+export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   useEffect(() => {
     const {
       Engine,
@@ -57,7 +57,7 @@ export function Physics() {
     const runner = Runner.create();
 
     render.options.wireframes = false;
-    render.options.background = "white";
+    render.options.background = "transparent";
 
     // Create boxes and ground
     const boxes = boxesProperties.map((b) =>
@@ -128,5 +128,73 @@ export function Physics() {
     };
   });
 
-  return null;
+  const [alreadyDropped, setAlreadyDropped] = useState(false);
+  const [activeProject, setActiveProject] = useState<number>();
+
+  const onClick = (projectId: number) => {
+    if (alreadyDropped) {
+      setActiveProject(undefined);
+      setTimeout(() => {
+        setActiveProject(projectId);
+      }, 1100);
+    } else {
+      setAlreadyDropped(true);
+      setActiveProject(projectId);
+    }
+  };
+
+  return (
+    <>
+      <main>
+        {[...Array(10).keys()].map((n) => {
+          return (
+            <button key={n} onClick={() => onClick(n)}>
+              картинки {n}
+            </button>
+          );
+        })}
+        {locale === "en" ? (
+          <div>
+            Martin Lezhenin is a <a className="link">graphic designer</a>,{" "}
+            <a className="link">media artist</a>, curator, art director,
+            teacher, creative director, brand director, and founder of the
+            creative bureau Whale Studio.
+          </div>
+        ) : (
+          <div>
+            Мартин Леженин — <a className="link">графический дизайнер</a>,{" "}
+            <a className="link">медиахудожник</a>, куратор, арт-директор,
+            педагог, креативный директор, бренд-директор, и основатель
+            креативного бюро Whale Studio.
+          </div>
+        )}
+      </main>
+
+      <footer className="footer">
+        <div className="footer-item" id="email">
+          <a className="link" href="mailto:martin@lezhen.in">
+            martin@lezhen.in
+          </a>
+        </div>
+        <div className="footer-item" id="cta">
+          {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ"}
+        </div>
+        <div className="footer-item" id="socials-group">
+          <a className="social" href="https://www.instagram.com/lezhenim/">
+            IG
+          </a>
+          <a
+            className="social"
+            href="https://www.linkedin.com/in/martinlezhenin/"
+          >
+            LI
+          </a>
+          <a className="social" href="https://www.t.me/votpravda">
+            TG
+          </a>
+        </div>
+      </footer>
+      {typeof activeProject === "number" && <Physics locale={locale} />}
+    </>
+  );
 }
