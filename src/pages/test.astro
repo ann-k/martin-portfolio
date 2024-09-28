@@ -2,7 +2,9 @@
 import Document from "../layouts/Document.astro";
 import Layout from "../layouts/Physics-layout.astro";
 
-import { Main } from "../components/Main";
+import { Physics } from "../components/Physics";
+
+const { locale = "en" } = Astro.props;
 ---
 
 <style is:global>
@@ -22,11 +24,9 @@ import { Main } from "../components/Main";
 <Document title="Portfolio">
   {
     import.meta.env.PUBLIC_PHYSICS ? (
-      <main>
-        <Layout>
-          <Main client:only="react" />
-        </Layout>
-      </main>
+      <Layout>
+        <Physics client:only="react" locale={locale} />
+      </Layout>
     ) : null
   }
 </Document>

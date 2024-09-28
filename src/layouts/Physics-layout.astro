@@ -51,6 +51,11 @@ const { locale = "en" } = Astro.props;
     color: inherit;
   }
 
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   footer {
     display: flex;
     flex-wrap: wrap;
@@ -118,29 +123,6 @@ const { locale = "en" } = Astro.props;
     }
   }
 </style>
-
 <Document title={locale === "en" ? "Martin Lezhenin" : "Мартин Леженин"}>
-  <main>
-    <slot />
-    {
-      locale === "en"
-        ? "Martin Lezhenin is a graphic designer, media artist, curator, art director, teacher, creative director, brand director, and founder of the creative bureau Whale Studio."
-        : "Мартин Леженин — графический дизайнер, медиахудожник, куратор, арт-директор, педагог, креативный директор, бренд-директор, и основатель креативного бюро Whale Studio."
-    }
-  </main>
-
-  <footer>
-    <div class="footer-item" id="email">
-      <a class="link" href="mailto:martin@lezhen.in">martin@lezhen.in</a>
-    </div>
-    <div class="footer-item" id="cta">
-      {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ"}
-    </div>
-    <div class="footer-item" id="socials-group">
-      <a class="social" href="https://www.instagram.com/lezhenim/">IG</a>
-      <a class="social" href="https://www.linkedin.com/in/martinlezhenin/">LI</a
-      >
-      <a class="social" href="https://www.t.me/votpravda">TG</a>
-    </div>
-  </footer>
+  <slot />
 </Document>
