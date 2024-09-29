@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 
 const boxesProperties = [
@@ -35,22 +35,45 @@ const boxesProperties = [
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
     Matter;
+  // const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    var canvas = document.createElement("canvas");
+    // const context = canvas.getContext("2d");
+    canvas.style.backgroundColor = "green";
+
+    document.body.appendChild(canvas);
+
+    // canvas.width = 777;
+
     // Create an engine
     const engine = Engine.create();
 
     // Create a renderer
     const render = Render.create({
-      element: document.body,
+      // element: document.body,
       engine: engine,
+      canvas,
     });
+
+    render.options.wireframes = false;
+    // render.options.background = "transparent";
+    render.options.height = window.innerHeight;
+    render.options.width = window.innerWidth;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.backgroundColor = "green";
+    // canvas.
+    // const canvas = document.getElementsByTagName("canvas")[0];
+    // canvas.style.width = "100vw";
+    // canvas.style.height = "100vh";
+    // canvas.style.position = "fixed";
+    // canvas.style.top = "0";
+    // canvas.style.left = "0";
+    // canvas.style.pointerEvents = "none";
 
     // Create runner
     const runner = Runner.create();
-
-    render.options.wireframes = false;
-    render.options.background = "transparent";
 
     // Create boxes and ground
     const boxes = boxesProperties.map((b) =>
@@ -72,30 +95,9 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       { isStatic: true },
     );
 
-    // Run the renderer
-    Render.run(render);
-
-    // Run the engine
-    Runner.run(runner, engine);
-
     // Set canvas size
-    const canvas = document.getElementsByTagName("canvas")[0];
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.position = "fixed";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.pointerEvents = "none";
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    window.addEventListener("resize", function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-
-    // Add ground and boxes to world
-    Composite.add(engine.world, [ground, ...boxes]);
+    console.log(document.getElementsByTagName("canvas"));
 
     // Create canvas mouse
     const canvasMouse = Mouse.create(canvas);
@@ -105,20 +107,33 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       mouse: canvasMouse,
     });
 
-    Composite.add(engine.world, mouseConstraint);
+    window.addEventListener("resize", function () {
+      render.options.height = window.innerHeight;
+      render.options.width = window.innerWidth;
+    });
+
+    // Add ground and boxes to world
+    Composite.add(engine.world, [ground, ...boxes]);
+    // Composite.add(engine.world, mouseConstraint);
 
     render.mouse = canvasMouse;
 
+    // Run the renderer
+    Render.run(render);
+
+    // Run the engine
+    Runner.run(runner, engine);
     // Cleanup
     return () => {
-      Composite.remove(engine.world, ground);
+      // Composite.remove(engine.world, ground);
 
-      setTimeout(() => {
-        Render.stop(render);
-        Composite.clear(engine.world, false);
-        Engine.clear(engine);
-        render.canvas.remove();
-      }, 1000);
+      // setTimeout(() => {
+      //   Render.stop(render);
+      //   Composite.clear(engine.world, false);
+      //   Engine.clear(engine);
+      //   render.canvas.remove();
+      // }, 1000);
+      render.canvas.remove();
     };
   });
 
@@ -126,22 +141,24 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const [activeProject, setActiveProject] = useState<number>();
 
   const onClick = (projectId: number) => {
-    if (alreadyDropped) {
-      setActiveProject(undefined);
-      setTimeout(() => {
-        setActiveProject(projectId);
-      }, 1100);
-    } else {
-      setAlreadyDropped(true);
-      setActiveProject(projectId);
-    }
+    console.log("clicked");
+    // if (alreadyDropped) {
+    //   setActiveProject(undefined);
+    //   setTimeout(() => {
+    //     setActiveProject(projectId);
+    //   }, 1100);
+    // } else {
+    //   setAlreadyDropped(true);
+    //   setActiveProject(projectId);
+    // }
   };
 
   return (
     <>
       <main>
+        <div id="physics-container"></div>
         {locale === "en" ? (
-          <div>
+          <div id="content">
             Martin Lezhenin is a{" "}
             <a className="link" onClick={() => onClick(0)}>
               graphic designer
@@ -162,6 +179,8 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
           </div>
         )}
       </main>
+
+      {/* <canvas ref={canvasRef} /> */}
 
       <footer className="footer">
         <div className="footer-item" id="email">

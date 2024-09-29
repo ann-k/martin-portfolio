@@ -23,7 +23,6 @@ const { locale = "en" } = Astro.props;
     overflow-x: hidden;
     overflow-y: auto;
 
-    padding: 50px;
     box-sizing: border-box;
 
     font-family: "Markin Sans Mono 10", system-ui, "Segoe UI", Roboto, Helvetica,
@@ -36,9 +35,22 @@ const { locale = "en" } = Astro.props;
     background-color: #ededed;
   }
 
+  #content {
+    padding: 50px;
+  }
+  footer {
+    padding: 50px;
+  }
+
   @media screen and (max-width: 648px) {
     body {
       font-size: 38px;
+      padding: 30px;
+    }
+    #content {
+      padding: 30px;
+    }
+    footer {
       padding: 30px;
     }
   }
@@ -46,6 +58,12 @@ const { locale = "en" } = Astro.props;
   @media screen and (max-width: 500px) {
     body {
       font-size: 32px;
+      padding: 20px;
+    }
+    #content {
+      padding: 20px;
+    }
+    footer {
       padding: 20px;
     }
   }
@@ -121,6 +139,13 @@ const { locale = "en" } = Astro.props;
       width: 70px;
       height: 70px;
     }
+  }
+
+  #physics-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: pink;
   }
 </style>
 
