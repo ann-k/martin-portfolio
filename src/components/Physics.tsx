@@ -54,24 +54,28 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       },
     });
 
-    // canvas.style.backgroundColor = "green";
-    // canvas.style.pointerEvents = "none";
-
-    // Run the renderer
-    Render.run(render);
-
     // Create boxes and ground
-    const boxes = boxesProperties.map((b) =>
-      Bodies.rectangle(b.x, b.y, b.width, b.height, {
-        render: {
-          sprite: {
-            texture: b.src,
-            xScale: 1,
-            yScale: 1,
-          },
-        },
-      }),
-    );
+
+    const boxes = boxesProperties.map((b, i) => ({
+      w: b.width,
+      h: b.height,
+      body: Matter.Bodies.rectangle(b.x, b.y, b.width, b.height),
+      elem: document.querySelector(`#box-${i}`) as HTMLDivElement,
+      backgroundImageSrc: b.src,
+    }));
+
+    const renderBox = (b: (typeof boxes)[number]) => {
+      const { x, y } = b.body.position;
+      if (b.elem) {
+        const { style } = b.elem;
+        style.width = `${b.w.toString()}px`;
+        style.height = `${b.h.toString()}px`;
+        style.backgroundImage = `url(${b.backgroundImageSrc})`;
+        style.top = `${y - b.h / 2}px`;
+        style.left = `${x - b.w / 2}px`;
+        style.transform = `rotate(${b.body.angle}rad)`;
+      }
+    };
 
     const groundWidth = 5000;
 
@@ -98,8 +102,21 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       { isStatic: true },
     );
 
-    // Add bodies to world
-    Composite.add(engine.world, [ground, leftWall, rightWall, ...boxes]);
+    // Add all bodies to world
+    Composite.add(engine.world, [
+      ground,
+      leftWall,
+      rightWall,
+      ...boxes.map((b) => b.body),
+    ]);
+
+    // Built-in renderer is replaced by custom renderer
+    function rerender() {
+      boxes.forEach((b) => renderBox(b));
+      Matter.Engine.update(engine);
+      requestAnimationFrame(rerender);
+    }
+    rerender();
 
     // Create canvas mouse
     const canvasMouse = Mouse.create(render.canvas);
@@ -170,6 +187,10 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   return (
     <>
       <main>
+        <div className="box" id="box-0"></div>
+        <div className="box" id="box-1"></div>
+        <div className="box" id="box-2"></div>
+        <div className="box" id="box-3"></div>
         <div id="physics-container"></div>
         {locale === "en" ? (
           <div id="content">
