@@ -35,45 +35,30 @@ const boxesProperties = [
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
     Matter;
-  // const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    var canvas = document.createElement("canvas");
-    // const context = canvas.getContext("2d");
-    canvas.style.backgroundColor = "green";
-
-    document.body.appendChild(canvas);
-
-    // canvas.width = 777;
+    const container = document.querySelector("#physics-container");
 
     // Create an engine
     const engine = Engine.create();
 
     // Create a renderer
     const render = Render.create({
-      // element: document.body,
+      element: container as HTMLElement,
       engine: engine,
-      canvas,
+      options: {
+        width: container?.clientWidth,
+        height: container?.clientHeight,
+        wireframes: false,
+        background: "transparent",
+      },
     });
 
-    render.options.wireframes = false;
-    // render.options.background = "transparent";
-    render.options.height = window.innerHeight;
-    render.options.width = window.innerWidth;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.backgroundColor = "green";
-    // canvas.
-    // const canvas = document.getElementsByTagName("canvas")[0];
-    // canvas.style.width = "100vw";
-    // canvas.style.height = "100vh";
-    // canvas.style.position = "fixed";
-    // canvas.style.top = "0";
-    // canvas.style.left = "0";
+    // canvas.style.backgroundColor = "green";
     // canvas.style.pointerEvents = "none";
 
-    // Create runner
-    const runner = Runner.create();
+    // Run the renderer
+    Render.run(render);
 
     // Create boxes and ground
     const boxes = boxesProperties.map((b) =>
@@ -87,42 +72,49 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         },
       }),
     );
+
+    const groundWidth = 5000;
+
     const ground = Bodies.rectangle(
-      window.innerWidth / 2,
-      window.innerHeight,
-      window.innerWidth,
-      30,
+      (container?.clientWidth ?? 0) / 2,
+      (container?.clientHeight ?? 0) + groundWidth / 2,
+      container?.clientWidth ?? 0,
+      groundWidth,
       { isStatic: true },
     );
 
-    // Set canvas size
-
-    console.log(document.getElementsByTagName("canvas"));
+    // Add ground and boxes to world
+    Composite.add(engine.world, [ground, ...boxes]);
 
     // Create canvas mouse
-    const canvasMouse = Mouse.create(canvas);
+    const canvasMouse = Mouse.create(render.canvas);
 
     // Create mouse constraint
     const mouseConstraint = MouseConstraint.create(engine, {
       mouse: canvasMouse,
     });
 
-    window.addEventListener("resize", function () {
-      render.options.height = window.innerHeight;
-      render.options.width = window.innerWidth;
-    });
+    Composite.add(engine.world, mouseConstraint);
 
-    // Add ground and boxes to world
-    Composite.add(engine.world, [ground, ...boxes]);
-    // Composite.add(engine.world, mouseConstraint);
-
-    render.mouse = canvasMouse;
-
-    // Run the renderer
-    Render.run(render);
-
+    // Create runner
+    const runner = Runner.create();
     // Run the engine
     Runner.run(runner, engine);
+
+    function handleResize() {
+      render.canvas.width = container?.clientWidth ?? 0;
+      render.canvas.height = container?.clientHeight ?? 0;
+
+      Matter.Body.setPosition(
+        ground,
+        Matter.Vector.create(
+          (container?.clientWidth ?? 0) / 2,
+          (container?.clientHeight ?? 0) + groundWidth / 2,
+        ),
+      );
+    }
+    window.addEventListener("resize", () => handleResize());
+
     // Cleanup
     return () => {
       // Composite.remove(engine.world, ground);
@@ -138,19 +130,18 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   });
 
   const [alreadyDropped, setAlreadyDropped] = useState(false);
-  const [activeProject, setActiveProject] = useState<number>();
+  const [_, setActiveProject] = useState<number>();
 
   const onClick = (projectId: number) => {
-    console.log("clicked");
-    // if (alreadyDropped) {
-    //   setActiveProject(undefined);
-    //   setTimeout(() => {
-    //     setActiveProject(projectId);
-    //   }, 1100);
-    // } else {
-    //   setAlreadyDropped(true);
-    //   setActiveProject(projectId);
-    // }
+    if (alreadyDropped) {
+      setActiveProject(undefined);
+      setTimeout(() => {
+        setActiveProject(projectId);
+      }, 1100);
+    } else {
+      setAlreadyDropped(true);
+      setActiveProject(projectId);
+    }
   };
 
   return (
@@ -179,8 +170,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
           </div>
         )}
       </main>
-
-      {/* <canvas ref={canvasRef} /> */}
 
       <footer className="footer">
         <div className="footer-item" id="email">
