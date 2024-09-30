@@ -35,10 +35,10 @@ const { locale = "en" } = Astro.props;
     background-color: #ededed;
   }
 
-  #content {
-    padding: 50px;
-  }
-  footer {
+  .content {
+    height: 100vh;
+    overflow: auto;
+    box-sizing: border-box;
     padding: 50px;
   }
 
@@ -47,10 +47,7 @@ const { locale = "en" } = Astro.props;
       font-size: 38px;
       padding: 30px;
     }
-    #content {
-      padding: 30px;
-    }
-    footer {
+    .content {
       padding: 30px;
     }
   }
@@ -60,10 +57,7 @@ const { locale = "en" } = Astro.props;
       font-size: 32px;
       padding: 20px;
     }
-    #content {
-      padding: 20px;
-    }
-    footer {
+    .content {
       padding: 20px;
     }
   }
@@ -142,14 +136,15 @@ const { locale = "en" } = Astro.props;
   }
 
   #physics-container {
-    /* position: absolute;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0; */
+    bottom: 0;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    z-index: -1;
   }
 
   .box {

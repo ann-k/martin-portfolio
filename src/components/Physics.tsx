@@ -185,15 +185,19 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   };
 
   return (
-    <>
-      <main>
-        <div className="box" id="box-0"></div>
-        <div className="box" id="box-1"></div>
-        <div className="box" id="box-2"></div>
-        <div className="box" id="box-3"></div>
-        <div id="physics-container"></div>
+    <main>
+      {/* <div className="box" id="box-0">
+        text
+      </div> */}
+      <div className="box" id="box-0"></div>
+      <div className="box" id="box-1"></div>
+      <div className="box" id="box-2"></div>
+      <div className="box" id="box-3"></div>
+      <div id="physics-container"></div>
+
+      <div className="content">
         {locale === "en" ? (
-          <div id="content">
+          <div>
             Martin Lezhenin is a{" "}
             <a className="link" onClick={() => onClick(0)}>
               graphic designer
@@ -213,32 +217,32 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
             креативного бюро Whale Studio.
           </div>
         )}
-      </main>
 
-      <footer className="footer">
-        <div className="footer-item" id="email">
-          <a className="link" href="mailto:martin@lezhen.in">
-            martin@lezhen.in
-          </a>
+        <div className="footer">
+          <div className="footer-item" id="email">
+            <a className="link" href="mailto:martin@lezhen.in">
+              martin@lezhen.in
+            </a>
+          </div>
+          <div className="footer-item" id="cta">
+            {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ"}
+          </div>
+          <div className="footer-item" id="socials-group">
+            <a className="social" href="https://www.instagram.com/lezhenim/">
+              IG
+            </a>
+            <a
+              className="social"
+              href="https://www.linkedin.com/in/martinlezhenin/"
+            >
+              LI
+            </a>
+            <a className="social" href="https://www.t.me/votpravda">
+              TG
+            </a>
+          </div>
         </div>
-        <div className="footer-item" id="cta">
-          {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ"}
-        </div>
-        <div className="footer-item" id="socials-group">
-          <a className="social" href="https://www.instagram.com/lezhenim/">
-            IG
-          </a>
-          <a
-            className="social"
-            href="https://www.linkedin.com/in/martinlezhenin/"
-          >
-            LI
-          </a>
-          <a className="social" href="https://www.t.me/votpravda">
-            TG
-          </a>
-        </div>
-      </footer>
-    </>
+      </div>
+    </main>
   );
 }
