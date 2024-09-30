@@ -83,8 +83,23 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       { isStatic: true },
     );
 
-    // Add ground and boxes to world
-    Composite.add(engine.world, [ground, ...boxes]);
+    const leftWall = Bodies.rectangle(
+      0 - groundWidth / 2,
+      (container?.clientHeight ?? 0) / 2,
+      groundWidth,
+      (container?.clientHeight ?? 0) * 5,
+      { isStatic: true },
+    );
+    const rightWall = Bodies.rectangle(
+      (container?.clientWidth ?? 0) + groundWidth / 2,
+      (container?.clientHeight ?? 0) / 2,
+      groundWidth,
+      (container?.clientHeight ?? 0) * 5,
+      { isStatic: true },
+    );
+
+    // Add bodies to world
+    Composite.add(engine.world, [ground, leftWall, rightWall, ...boxes]);
 
     // Create canvas mouse
     const canvasMouse = Mouse.create(render.canvas);
@@ -110,6 +125,14 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         Matter.Vector.create(
           (container?.clientWidth ?? 0) / 2,
           (container?.clientHeight ?? 0) + groundWidth / 2,
+        ),
+      );
+
+      Matter.Body.setPosition(
+        rightWall,
+        Matter.Vector.create(
+          (container?.clientWidth ?? 0) + groundWidth / 2,
+          (container?.clientHeight ?? 0) / 2,
         ),
       );
     }
