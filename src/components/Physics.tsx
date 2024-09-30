@@ -36,11 +36,20 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
     Matter;
 
+  let ground: Matter.Body;
+  let boxes: {
+    w: number;
+    h: number;
+    body: Matter.Body;
+    elem: HTMLDivElement;
+    backgroundImageSrc: string;
+  }[] = [];
+
+  // Create an engine
+  const engine = Engine.create();
+
   useEffect(() => {
     const container = document.querySelector("#physics-container");
-
-    // Create an engine
-    const engine = Engine.create();
 
     // Create a renderer
     const render = Render.create({
@@ -56,7 +65,7 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
 
     // Create boxes and ground
 
-    const boxes = boxesProperties.map((b, i) => ({
+    boxes = boxesProperties.map((b, i) => ({
       w: b.width,
       h: b.height,
       body: Matter.Bodies.rectangle(b.x, b.y, b.width, b.height),
@@ -79,7 +88,7 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
 
     const groundWidth = 5000;
 
-    const ground = Bodies.rectangle(
+    ground = Bodies.rectangle(
       (container?.clientWidth ?? 0) / 2,
       (container?.clientHeight ?? 0) + groundWidth / 2,
       container?.clientWidth ?? 0,
@@ -172,16 +181,26 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const [alreadyDropped, setAlreadyDropped] = useState(false);
   const [_, setActiveProject] = useState<number>();
 
-  const onClick = (projectId: number) => {
-    if (alreadyDropped) {
-      setActiveProject(undefined);
+  const onClick = async (projectId: number) => {
+    if (projectId === 1) {
+      Composite.remove(engine.world, ground);
       setTimeout(() => {
-        setActiveProject(projectId);
-      }, 1100);
-    } else {
-      setAlreadyDropped(true);
-      setActiveProject(projectId);
+        Composite.add(engine.world, ground);
+        Composite.remove(
+          engine.world,
+          boxes.map((b) => b.body),
+        );
+      }, 1000);
     }
+    // if (alreadyDropped) {
+    //   setActiveProject(undefined);
+    //   setTimeout(() => {
+    //     setActiveProject(projectId);
+    //   }, 1100);
+    // } else {
+    //   setAlreadyDropped(true);
+    //   setActiveProject(projectId);
+    // }
   };
 
   return (
