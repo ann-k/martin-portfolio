@@ -142,11 +142,22 @@ const { locale = "en" } = Astro.props;
   }
 
   #physics-container {
-    /* width: 100% */
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; */
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    /* background-color: ''; */
+  }
+
+  .box {
+    position: absolute;
+    background-color: green;
+    color: pink;
+    height: 80px;
+    width: 14px;
   }
 </style>
 
