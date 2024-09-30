@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 
 const boxesProperties = [
@@ -33,31 +33,32 @@ const boxesProperties = [
 ];
 
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
+  const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
+    Matter;
+
   useEffect(() => {
-    const {
-      Engine,
-      Render,
-      Runner,
-      Bodies,
-      Composite,
-      MouseConstraint,
-      Mouse,
-    } = Matter;
+    const container = document.querySelector("#physics-container");
 
     // Create an engine
     const engine = Engine.create();
 
     // Create a renderer
     const render = Render.create({
-      element: document.body,
+      element: container as HTMLElement,
       engine: engine,
+      options: {
+        width: container?.clientWidth,
+        height: container?.clientHeight,
+        wireframes: false,
+        background: "transparent",
+      },
     });
 
-    // Create runner
-    const runner = Runner.create();
+    // canvas.style.backgroundColor = "green";
+    // canvas.style.pointerEvents = "none";
 
-    render.options.wireframes = false;
-    render.options.background = "transparent";
+    // Run the renderer
+    Render.run(render);
 
     // Create boxes and ground
     const boxes = boxesProperties.map((b) =>
@@ -71,40 +72,22 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         },
       }),
     );
+
+    const groundWidth = 5000;
+
     const ground = Bodies.rectangle(
-      window.innerWidth / 2,
-      window.innerHeight,
-      window.innerWidth,
-      30,
+      (container?.clientWidth ?? 0) / 2,
+      (container?.clientHeight ?? 0) + groundWidth / 2,
+      container?.clientWidth ?? 0,
+      groundWidth,
       { isStatic: true },
     );
-
-    // Run the renderer
-    Render.run(render);
-
-    // Run the engine
-    Runner.run(runner, engine);
-
-    // Set canvas size
-    const canvas = document.getElementsByTagName("canvas")[0];
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.position = "fixed";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    window.addEventListener("resize", function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
 
     // Add ground and boxes to world
     Composite.add(engine.world, [ground, ...boxes]);
 
     // Create canvas mouse
-    const canvasMouse = Mouse.create(canvas);
+    const canvasMouse = Mouse.create(render.canvas);
 
     // Create mouse constraint
     const mouseConstraint = MouseConstraint.create(engine, {
@@ -113,23 +96,41 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
 
     Composite.add(engine.world, mouseConstraint);
 
-    render.mouse = canvasMouse;
+    // Create runner
+    const runner = Runner.create();
+    // Run the engine
+    Runner.run(runner, engine);
+
+    function handleResize() {
+      render.canvas.width = container?.clientWidth ?? 0;
+      render.canvas.height = container?.clientHeight ?? 0;
+
+      Matter.Body.setPosition(
+        ground,
+        Matter.Vector.create(
+          (container?.clientWidth ?? 0) / 2,
+          (container?.clientHeight ?? 0) + groundWidth / 2,
+        ),
+      );
+    }
+    window.addEventListener("resize", () => handleResize());
 
     // Cleanup
     return () => {
-      Composite.remove(engine.world, ground);
+      // Composite.remove(engine.world, ground);
 
-      setTimeout(() => {
-        Render.stop(render);
-        Composite.clear(engine.world, false);
-        Engine.clear(engine);
-        render.canvas.remove();
-      }, 1000);
+      // setTimeout(() => {
+      //   Render.stop(render);
+      //   Composite.clear(engine.world, false);
+      //   Engine.clear(engine);
+      //   render.canvas.remove();
+      // }, 1000);
+      render.canvas.remove();
     };
   });
 
   const [alreadyDropped, setAlreadyDropped] = useState(false);
-  const [activeProject, setActiveProject] = useState<number>();
+  const [_, setActiveProject] = useState<number>();
 
   const onClick = (projectId: number) => {
     if (alreadyDropped) {
@@ -146,19 +147,19 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   return (
     <>
       <main>
-        {[...Array(10).keys()].map((n) => {
-          return (
-            <button key={n} onClick={() => onClick(n)}>
-              картинки {n}
-            </button>
-          );
-        })}
+        <div id="physics-container"></div>
         {locale === "en" ? (
-          <div>
-            Martin Lezhenin is a <a className="link">graphic designer</a>,{" "}
-            <a className="link">media artist</a>, curator, art director,
-            teacher, creative director, brand director, and founder of the
-            creative bureau Whale Studio.
+          <div id="content">
+            Martin Lezhenin is a{" "}
+            <a className="link" onClick={() => onClick(0)}>
+              graphic designer
+            </a>
+            ,{" "}
+            <a className="link" onClick={() => onClick(1)}>
+              media artist
+            </a>
+            , curator, art director, teacher, creative director, brand director,
+            and founder of the creative bureau Whale Studio.
           </div>
         ) : (
           <div>
@@ -194,7 +195,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
           </a>
         </div>
       </footer>
-      {typeof activeProject === "number" && <Physics locale={locale} />}
     </>
   );
 }
