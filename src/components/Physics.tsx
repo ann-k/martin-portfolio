@@ -5,28 +5,24 @@ const boxesProperties = [
   {
     width: 256,
     height: 256,
-    x: 500,
-    y: 0,
+    y: -50,
     src: "/martin-portfolio/images/1.jpeg",
   },
   {
     width: 150,
     height: 92,
-    x: 550,
     y: -50,
     src: "/martin-portfolio/images/2.jpeg",
   },
   {
     width: 150,
     height: 156,
-    x: 200,
-    y: 0,
+    y: -50,
     src: "/martin-portfolio/images/3.jpeg",
   },
   {
     width: 240,
     height: 166,
-    x: 600,
     y: -50,
     src: "/martin-portfolio/images/4.jpeg",
   },
@@ -77,7 +73,12 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     boxes = boxesProperties.map((b, i) => ({
       w: b.width,
       h: b.height,
-      body: Matter.Bodies.rectangle(b.x, b.y, b.width, b.height),
+      body: Matter.Bodies.rectangle(
+        Math.random() * 400 + 200, // max should be container width
+        b.y,
+        b.width,
+        b.height,
+      ),
       elem: document.querySelector(`#box-${i}`) as HTMLDivElement,
       backgroundImageSrc: b.src,
     }));
@@ -116,14 +117,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         background: "transparent",
       },
     });
-
-    boxes = boxesProperties.map((b, i) => ({
-      w: b.width,
-      h: b.height,
-      body: Matter.Bodies.rectangle(b.x, b.y, b.width, b.height),
-      elem: document.querySelector(`#box-${i}`) as HTMLDivElement,
-      backgroundImageSrc: b.src,
-    }));
 
     const groundWidth = 5000;
 
@@ -220,15 +213,27 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         {locale === "en" ? (
           <div>
             Martin Lezhenin is a{" "}
-            <a className="link" onClick={() => onClick()}>
+            <a className="link" onClick={onClick}>
               graphic designer
             </a>
             ,{" "}
-            <a className="link" onClick={() => onClick()}>
+            <a className="link" onClick={onClick}>
               media artist
             </a>
-            , curator, art director, teacher, creative director, brand director,
-            and founder of the creative bureau Whale Studio.
+            ,{" "}
+            <a className="link" onClick={onClick}>
+              curator
+            </a>
+            ,{" "}
+            <a className="link" onClick={onClick}>
+              art director
+            </a>
+            , teacher, creative director, brand director, and founder of the
+            creative bureau{" "}
+            <a className="link" onClick={onClick}>
+              Whale Studio
+            </a>
+            .
           </div>
         ) : (
           <div>
