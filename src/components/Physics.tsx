@@ -64,6 +64,8 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     requestAnimationFrame(rerender);
   };
 
+  let firstDisplayed = false;
+
   const displayBoxes = () => {
     Composite.remove(
       engine.world,
@@ -85,10 +87,16 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
 
     Composite.add(
       engine.world,
-      boxes.map((b) => b.body),
+      boxes.map((b) => {
+        b.body.restitution = 0.3;
+        b.body.frictionAir = 0.02;
+        return b.body;
+      }),
     );
-
-    rerender();
+    if (!firstDisplayed) {
+      rerender();
+    }
+    firstDisplayed = true;
   };
 
   // const hideBoxes = () => {
