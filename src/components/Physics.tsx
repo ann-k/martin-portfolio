@@ -69,6 +69,11 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   };
 
   const displayBoxes = () => {
+    Composite.remove(
+      engine.world,
+      boxes.map((b) => b.body),
+    );
+
     boxes = boxesProperties.map((b, i) => ({
       w: b.width,
       h: b.height,
