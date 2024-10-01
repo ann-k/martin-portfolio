@@ -155,9 +155,5 @@ const { locale = "en" } = Astro.props;
 </style>
 
 <Document title={locale === "en" ? "Martin Lezhenin" : "Мартин Леженин"}>
-  {
-    import.meta.env.PUBLIC_PHYSICS ? (
-      <Physics client:only="react" locale={locale} />
-    ) : null
-  }
+  <Physics client:only="react" locale={locale} />
 </Document>
