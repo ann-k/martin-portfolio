@@ -6,7 +6,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   integrations: [react()],
   site: "https://ann-k.github.io",
-  base: "/martin-portfolio",
+  // base: "/martin-portfolio",
   i18n: {
     defaultLocale: "en",
     locales: ["en", "ru"],
