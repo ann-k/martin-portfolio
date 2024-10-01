@@ -85,18 +85,17 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     rerender();
   };
 
-  const hideBoxes = () => {
-    Composite.remove(engine.world, ground);
-
-    setTimeout(() => {
-      Composite.add(engine.world, ground);
-      Composite.remove(
-        engine.world,
-        boxes.map((b) => b.body),
-      );
-    }, 1000);
-    rerender();
-  };
+  // const hideBoxes = () => {
+  // Composite.remove(engine.world, ground);
+  // setTimeout(() => {
+  //   Composite.add(engine.world, ground);
+  //   Composite.remove(
+  //     engine.world,
+  //     boxes.map((b) => b.body),
+  //   );
+  // }, 1000);
+  // rerender();
+  // };
 
   useEffect(() => {
     const container = document.querySelector("#physics-container");
@@ -197,15 +196,8 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     };
   });
 
-  const [visibleBoxes, setVisibleBoxes] = useState(false);
-
-  const onClick = async (projectId: number) => {
-    if (visibleBoxes) {
-      hideBoxes();
-    } else {
-      displayBoxes();
-    }
-    setVisibleBoxes((prev) => !prev);
+  const onClick = async () => {
+    displayBoxes();
   };
 
   return (
@@ -223,11 +215,11 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         {locale === "en" ? (
           <div>
             Martin Lezhenin is a{" "}
-            <a className="link" onClick={() => onClick(0)}>
+            <a className="link" onClick={() => onClick()}>
               graphic designer
             </a>
             ,{" "}
-            <a className="link" onClick={() => onClick(1)}>
+            <a className="link" onClick={() => onClick()}>
               media artist
             </a>
             , curator, art director, teacher, creative director, brand director,
