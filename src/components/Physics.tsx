@@ -48,6 +48,56 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   // Create an engine
   const engine = Engine.create();
 
+  const renderBox = (b: (typeof boxes)[number]) => {
+    const { x, y } = b.body.position;
+    if (b.elem) {
+      const { style } = b.elem;
+      style.width = `${b.w.toString()}px`;
+      style.height = `${b.h.toString()}px`;
+      style.backgroundImage = `url(${b.backgroundImageSrc})`;
+      style.top = `${y - b.h / 2}px`;
+      style.left = `${x - b.w / 2}px`;
+      style.transform = `rotate(${b.body.angle}rad)`;
+    }
+  };
+
+  // Built-in renderer is replaced by custom renderer
+  const rerender = () => {
+    boxes.forEach((b) => renderBox(b));
+    Matter.Engine.update(engine);
+    requestAnimationFrame(rerender);
+  };
+
+  const displayBoxes = () => {
+    boxes = boxesProperties.map((b, i) => ({
+      w: b.width,
+      h: b.height,
+      body: Matter.Bodies.rectangle(b.x, b.y, b.width, b.height),
+      elem: document.querySelector(`#box-${i}`) as HTMLDivElement,
+      backgroundImageSrc: b.src,
+    }));
+
+    Composite.add(
+      engine.world,
+      boxes.map((b) => b.body),
+    );
+
+    rerender();
+  };
+
+  const hideBoxes = () => {
+    Composite.remove(engine.world, ground);
+
+    setTimeout(() => {
+      Composite.add(engine.world, ground);
+      Composite.remove(
+        engine.world,
+        boxes.map((b) => b.body),
+      );
+    }, 1000);
+    rerender();
+  };
+
   useEffect(() => {
     const container = document.querySelector("#physics-container");
 
@@ -63,8 +113,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       },
     });
 
-    // Create boxes and ground
-
     boxes = boxesProperties.map((b, i) => ({
       w: b.width,
       h: b.height,
@@ -72,19 +120,6 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       elem: document.querySelector(`#box-${i}`) as HTMLDivElement,
       backgroundImageSrc: b.src,
     }));
-
-    const renderBox = (b: (typeof boxes)[number]) => {
-      const { x, y } = b.body.position;
-      if (b.elem) {
-        const { style } = b.elem;
-        style.width = `${b.w.toString()}px`;
-        style.height = `${b.h.toString()}px`;
-        style.backgroundImage = `url(${b.backgroundImageSrc})`;
-        style.top = `${y - b.h / 2}px`;
-        style.left = `${x - b.w / 2}px`;
-        style.transform = `rotate(${b.body.angle}rad)`;
-      }
-    };
 
     const groundWidth = 5000;
 
@@ -111,31 +146,15 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       { isStatic: true },
     );
 
-    // Add all bodies to world
-    Composite.add(engine.world, [
-      ground,
-      leftWall,
-      rightWall,
-      ...boxes.map((b) => b.body),
-    ]);
+    Composite.add(engine.world, [ground, leftWall, rightWall]);
 
-    // Built-in renderer is replaced by custom renderer
-    function rerender() {
-      boxes.forEach((b) => renderBox(b));
-      Matter.Engine.update(engine);
-      requestAnimationFrame(rerender);
-    }
-    rerender();
-
-    // Create canvas mouse
-    const canvasMouse = Mouse.create(render.canvas);
-
-    // Create mouse constraint
-    const mouseConstraint = MouseConstraint.create(engine, {
-      mouse: canvasMouse,
-    });
-
-    Composite.add(engine.world, mouseConstraint);
+    // // Create canvas mouse
+    // const canvasMouse = Mouse.create(render.canvas);
+    // // Create mouse constraint
+    // const mouseConstraint = MouseConstraint.create(engine, {
+    //   mouse: canvasMouse,
+    // });
+    // Composite.add(engine.world, mouseConstraint);
 
     // Create runner
     const runner = Runner.create();
@@ -178,29 +197,15 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     };
   });
 
-  const [alreadyDropped, setAlreadyDropped] = useState(false);
-  const [_, setActiveProject] = useState<number>();
+  const [visibleBoxes, setVisibleBoxes] = useState(false);
 
   const onClick = async (projectId: number) => {
-    if (projectId === 1) {
-      Composite.remove(engine.world, ground);
-      setTimeout(() => {
-        Composite.add(engine.world, ground);
-        Composite.remove(
-          engine.world,
-          boxes.map((b) => b.body),
-        );
-      }, 1000);
+    if (visibleBoxes) {
+      hideBoxes();
+    } else {
+      displayBoxes();
     }
-    // if (alreadyDropped) {
-    //   setActiveProject(undefined);
-    //   setTimeout(() => {
-    //     setActiveProject(projectId);
-    //   }, 1100);
-    // } else {
-    //   setAlreadyDropped(true);
-    //   setActiveProject(projectId);
-    // }
+    setVisibleBoxes((prev) => !prev);
   };
 
   return (
