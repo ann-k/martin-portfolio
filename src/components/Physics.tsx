@@ -6,25 +6,25 @@ const boxesProperties = [
     width: 256,
     height: 256,
     y: -50,
-    src: "/martin-portfolio/images/1.jpeg",
+    src: "/images/1.jpeg",
   },
   {
     width: 150,
     height: 92,
     y: -50,
-    src: "/martin-portfolio/images/2.jpeg",
+    src: "/images/2.jpeg",
   },
   {
     width: 150,
     height: 156,
     y: -50,
-    src: "/martin-portfolio/images/3.jpeg",
+    src: "/images/3.jpeg",
   },
   {
     width: 240,
     height: 166,
     y: -50,
-    src: "/martin-portfolio/images/4.jpeg",
+    src: "/images/4.jpeg",
   },
 ];
 
