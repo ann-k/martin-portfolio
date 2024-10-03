@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
+import { Project } from "./Project";
 
 const boxesProperties = [
+  {
+    width: 240,
+    height: 166,
+    y: -50,
+    src: "/images/0.jpeg",
+  },
   {
     width: 256,
     height: 256,
@@ -20,17 +27,19 @@ const boxesProperties = [
     y: -50,
     src: "/images/3.jpeg",
   },
-  {
-    width: 240,
-    height: 166,
-    y: -50,
-    src: "/images/4.jpeg",
-  },
 ];
 
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
-  const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse } =
-    Matter;
+  const [activeProject, setActiveProject] = useState<number>();
+
+  const {
+    Engine,
+    Render,
+    Runner,
+    Bodies,
+    Composite,
+    // MouseConstraint, Mouse
+  } = Matter;
 
   let ground: Matter.Body;
   let boxes: {
@@ -202,43 +211,62 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     };
   });
 
-  const onClick = async () => {
+  const onGroupClick = () => {
     displayBoxes();
   };
 
+  const onProjectClick = (n: number) => {
+    setActiveProject(n);
+  };
+
+  const onProjectModalClose = () => {
+    setActiveProject(undefined);
+  };
+
   return (
-    <main>
+    <main
+      className={typeof activeProject === "number" ? "has-dialog" : undefined}
+    >
+      {typeof activeProject === "number" && (
+        <Project activeProject={activeProject} onClose={onProjectModalClose} />
+      )}
+
       {/* <div className="box" id="box-0">
         text
       </div> */}
-      <div className="box" id="box-0"></div>
-      <div className="box" id="box-1"></div>
-      <div className="box" id="box-2"></div>
-      <div className="box" id="box-3"></div>
+
+      {Array.from(Array(4).keys()).map((n) => (
+        <button
+          className="box"
+          id={`box-${n}`}
+          onClick={() => onProjectClick(n)}
+        />
+      ))}
+
       <div id="physics-container"></div>
 
       <div className="content">
         {locale === "en" ? (
           <div>
             Martin Lezhenin is a{" "}
-            <a className="link" onClick={onClick}>
+            <a className="link" role="button" onClick={onGroupClick}>
               graphic designer
             </a>
             ,{" "}
-            <a className="link" onClick={onClick}>
+            <a className="link" role="button" onClick={onGroupClick}>
               media artist
             </a>
             ,{" "}
-            <a className="link" onClick={onClick}>
+            <a className="link" role="button" onClick={onGroupClick}>
               curator
             </a>
             ,{" "}
-            <a className="link" onClick={onClick}>
+            <a className="link" role="button" onClick={onGroupClick}>
               art director
             </a>
             , teacher, creative director, brand director, and founder of the
             creative bureau{" "}
-            <a className="link" onClick={onClick}>
+            <a className="link" role="button" onClick={onGroupClick}>
               Whale Studio
             </a>
             .
@@ -259,7 +287,7 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
             </a>
           </div>
           <div className="footer-item" id="cta">
-            {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ"}
+            {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ?"}
           </div>
           <div className="footer-item" id="socials-group">
             <a className="social" href="https://www.instagram.com/lezhenim/">

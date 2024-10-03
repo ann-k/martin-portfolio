@@ -151,6 +151,137 @@ const { locale = "en" } = Astro.props;
     position: absolute;
     height: 0;
     width: 0;
+    border: none;
+  }
+
+  .box:hover {
+    cursor: pointer;
+  }
+
+  .dialog-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    padding: 15px;
+    display: flex;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  [role="dialog"] {
+    position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    padding: 64px;
+    background-color: #fff;
+    border-radius: 42px;
+    max-height: calc(100vh - 30px);
+    overflow-y: auto;
+
+    display: grid;
+    column-gap: 48px;
+
+    box-shadow:
+      0 19px 38px rgb(0 0 0 / 12%),
+      0 15px 12px rgb(0 0 0 / 22%);
+  }
+
+  @media screen and (min-width: 641px) {
+    [role="dialog"] {
+      grid-template-columns: minmax(0, 1fr) 1fr;
+    }
+  }
+
+  [role="dialog"] img {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 640px) {
+    [role="dialog"] {
+      padding: 25px;
+    }
+
+    [role="dialog"] img {
+      margin-bottom: 25px;
+    }
+  }
+
+  .dialog-description {
+    display: grid;
+    font-size: 30px;
+  }
+
+  .dialog-description h2 {
+    font-size: 45px;
+    margin-bottom: 25px;
+  }
+
+  @media screen and (max-width: 648px) {
+    .dialog-description {
+      font-size: 24px;
+    }
+
+    .dialog-description h2 {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .dialog-description .text {
+    display: grid;
+    row-gap: 25px;
+  }
+
+  .dialog-description div:last-child {
+    margin-top: 60px;
+  }
+
+  .dialog-close-button {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .dialog-close-button:before,
+  .dialog-close-button:after {
+    position: absolute;
+    content: " ";
+    height: 20px;
+    width: 2px;
+    transform: rotate(45deg) translate(-50%, -50%);
+    background-color: #333;
+  }
+  .dialog-close-button:before {
+    transform: rotate(45deg);
+  }
+  .dialog-close-button:after {
+    transform: rotate(-45deg);
+  }
+
+  .dialog-backdrop {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: rgb(0 0 0 / 30%);
+  }
+
+  .has-dialog {
+    overflow: hidden;
   }
 </style>
 
