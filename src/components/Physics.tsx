@@ -2,32 +2,61 @@ import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 import { Project } from "./Project";
 
-const boxesProperties = [
+const groups = ["designer", "artist", "curator", "director", "studio"] as const;
+
+type Group = (typeof groups)[number];
+
+const designerProjects = [
   {
     width: 240,
     height: 166,
-    y: -50,
-    src: "/images/0.jpeg",
+    src: "/images/designer/0.jpeg",
   },
   {
     width: 256,
     height: 256,
-    y: -50,
-    src: "/images/1.jpeg",
+    src: "/images/designer/1.jpeg",
   },
   {
     width: 150,
     height: 92,
-    y: -50,
-    src: "/images/2.jpeg",
+    src: "/images/designer/2.jpeg",
   },
   {
     width: 150,
     height: 156,
-    y: -50,
-    src: "/images/3.jpeg",
+    src: "/images/designer/3.jpeg",
   },
 ];
+
+const artistProjects = [
+  {
+    width: 209,
+    height: 313,
+    src: "/images/artist/0.jpeg",
+  },
+  {
+    width: 350,
+    height: 382,
+    src: "/images/artist/1.jpeg",
+  },
+  {
+    width: 375,
+    height: 250,
+    src: "/images/artist/2.jpeg",
+  },
+];
+
+const projects: Record<
+  Group,
+  { width: number; height: number; src: string }[]
+> = {
+  designer: designerProjects,
+  artist: artistProjects,
+  curator: designerProjects,
+  director: designerProjects,
+  studio: designerProjects,
+};
 
 export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
   const [activeProject, setActiveProject] = useState<number>();
@@ -75,18 +104,20 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
 
   let firstDisplayed = false;
 
-  const displayBoxes = () => {
+  const displayBoxes = (group: Group) => {
     Composite.remove(
       engine.world,
       boxes.map((b) => b.body),
     );
 
-    boxes = boxesProperties.map((b, i) => ({
+    const groupProjects = projects[group];
+
+    boxes = groupProjects.map((b, i) => ({
       w: b.width,
       h: b.height,
       body: Matter.Bodies.rectangle(
         Math.random() * 400 + 200, // max should be container width
-        b.y,
+        -50,
         b.width,
         b.height,
       ),
@@ -211,8 +242,8 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
     };
   });
 
-  const onGroupClick = () => {
-    displayBoxes();
+  const onGroupClick = (group: Group) => {
+    displayBoxes(group);
   };
 
   const onProjectClick = (n: number) => {
@@ -249,24 +280,44 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
         {locale === "en" ? (
           <div>
             Martin Lezhenin is a{" "}
-            <a className="link" role="button" onClick={onGroupClick}>
+            <a
+              className="link"
+              role="button"
+              onClick={() => onGroupClick("designer")}
+            >
               graphic designer
             </a>
             ,{" "}
-            <a className="link" role="button" onClick={onGroupClick}>
+            <a
+              className="link"
+              role="button"
+              onClick={() => onGroupClick("artist")}
+            >
               media artist
             </a>
             ,{" "}
-            <a className="link" role="button" onClick={onGroupClick}>
+            <a
+              className="link"
+              role="button"
+              onClick={() => onGroupClick("curator")}
+            >
               curator
             </a>
             ,{" "}
-            <a className="link" role="button" onClick={onGroupClick}>
+            <a
+              className="link"
+              role="button"
+              onClick={() => onGroupClick("director")}
+            >
               art director
             </a>
             , teacher, creative director, brand director, and founder of the
             creative bureau{" "}
-            <a className="link" role="button" onClick={onGroupClick}>
+            <a
+              className="link"
+              role="button"
+              onClick={() => onGroupClick("studio")}
+            >
               Whale Studio
             </a>
             .
