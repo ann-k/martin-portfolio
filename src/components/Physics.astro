@@ -1,9 +1,21 @@
 ---
+import Link from "./Link.astro";
+
 interface Props {
   locale?: "ru" | "en";
 }
 
 const { locale = "en" } = Astro.props;
+const groups = {
+  designer: "graphic designer",
+  artist: "media artist",
+  curator: "curator",
+  "art-director": "art director",
+  teacher: "teacher",
+  "creative-director": "creative director",
+  "brand-director": "brand director",
+  studio: "Whale Studio",
+};
 ---
 
 <script>
@@ -12,47 +24,41 @@ const { locale = "en" } = Astro.props;
 </script>
 <main>
   <div id="physics-container"></div>
-
-  <div class="content">
+  <div class="controls">
     {
       locale === "en" ? (
         <div>
           Martin Lezhenin is a{" "}
-          <a class="link" role="button">
-            {/* onclick={() => onGroupClick("designer")} */}
-            graphic designer
-          </a>
-          , {/* onclick={() => onGroupClick("artist")} */}
-          <a class="link" role="button">
-            media artist
-          </a>
-          ,{" "}
-          <a class="link" role="button">
-            {/* onclick={() => onGroupClick("curator")} */}
-            curator
-          </a>
-          ,{" "}
-          <a class="link" role="button">
-            {/* onclick={() => onGroupClick("director")} */}
-            art director
-          </a>
-          , teacher, creative director, brand director, and founder of the
-          creative bureau{" "}
-          <a class="link" role="button">
-            {/* onclick={() => onGroupClick("studio")} */}
-            Whale Studio
-          </a>
-          .
+          {Object.entries(groups).map(([groupId, text], i) => {
+            if (i === Object.entries(groups).length - 1) return "";
+            if (i === Object.entries(groups).length - 2)
+              return (
+                <span>
+                  <Link groupId={groupId} text={text} />
+                </span>
+              );
+
+            return (
+              <span>
+                <Link groupId={groupId} text={text} />,{" "}
+              </span>
+            );
+          })}
+          and founder of the creative bureau{" "}
+          <Link groupId="studio" text="Whale Studio" />.
         </div>
       ) : (
         <div>
-          Мартин Леженин — <a class="link">графический дизайнер</a>,{" "}
-          <a class="link">медиахудожник</a>, куратор, арт-директор, педагог,
-          креативный директор, бренд-директор, и основатель креативного бюро
-          Whale Studio.
+          Мартин Леженин — графический дизайнер, медиахудожник, куратор,
+          арт-директор, педагог, креативный директор, бренд-директор, и
+          основатель креативного бюро Whale Studio.
         </div>
       )
     }
+  </div>
+
+  <div class="content">
+    <div></div>
 
     <div class="footer">
       <div class="footer-item" id="email-container">

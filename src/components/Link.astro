@@ -1,0 +1,11 @@
+---
+// This is separate component due to a bug of adding extra spaces to links
+interface Props {
+  groupId: string;
+  text: string;
+}
+
+const { groupId, text } = Astro.props;
+---
+
+<a class="link" role="button" id={groupId}>{text}</a>

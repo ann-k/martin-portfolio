@@ -1,5 +1,73 @@
 import Matter from "matter-js";
 
+const groups = [
+  "designer",
+  "artist",
+  "curator",
+  "art-director",
+  "teacher",
+  "creative-director",
+  "brand-director",
+  "studio",
+] as const;
+
+type Group = (typeof groups)[number];
+
+const designerProjects = [
+  {
+    width: 240,
+    height: 166,
+    src: "/images/designer/0.jpeg",
+  },
+  {
+    width: 256,
+    height: 256,
+    src: "/images/designer/1.jpeg",
+  },
+  {
+    width: 150,
+    height: 92,
+    src: "/images/designer/2.jpeg",
+  },
+  {
+    width: 150,
+    height: 156,
+    src: "/images/designer/3.jpeg",
+  },
+];
+
+const artistProjects = [
+  {
+    width: 209,
+    height: 313,
+    src: "/images/artist/0.jpeg",
+  },
+  {
+    width: 365,
+    height: 314,
+    src: "/images/artist/1.jpeg",
+  },
+  {
+    width: 254,
+    height: 376,
+    src: "/images/artist/2.jpeg",
+  },
+];
+
+const projects: Record<
+  Group,
+  { width: number; height: number; src: string }[]
+> = {
+  designer: designerProjects,
+  artist: artistProjects,
+  curator: designerProjects,
+  "art-director": designerProjects,
+  studio: designerProjects,
+  teacher: designerProjects,
+  "creative-director": designerProjects,
+  "brand-director": designerProjects,
+};
+
 export function doIt() {
   const container = document.querySelector("#physics-container");
   if (!container) return;
@@ -23,12 +91,7 @@ export function doIt() {
     },
   });
 
-  const boxA = Matter.Bodies.rectangle(400, 200, 80, 80, {
-    collisionFilter: { mask: defaultCategory },
-  });
-  const boxB = Matter.Bodies.rectangle(450, 50, 80, 80, {
-    collisionFilter: { mask: defaultCategory },
-  });
+  let boxes: Matter.Body[] = [];
   const ground = Matter.Bodies.rectangle(
     container.clientWidth / 2,
     container.clientHeight + groundThickness / 2,
@@ -104,14 +167,7 @@ export function doIt() {
 
   const fakes = [...circles, getEmailFake()].filter((b) => !!b);
 
-  Matter.Composite.add(engine.world, [
-    boxA,
-    boxB,
-    ground,
-    leftWall,
-    rightWall,
-    ...fakes,
-  ]);
+  Matter.Composite.add(engine.world, [ground, leftWall, rightWall, ...fakes]);
 
   const mouse = Matter.Mouse.create(render.canvas);
   const mouseConstraint = Matter.MouseConstraint.create(engine, {
@@ -192,4 +248,43 @@ export function doIt() {
   window.addEventListener("resize", () =>
     handleResize(container as HTMLElement),
   );
+
+  function displayBoxes(group: Group, c: HTMLElement) {
+    Matter.Composite.remove(engine.world, boxes);
+
+    const groupProjects = projects[group];
+
+    boxes = groupProjects.map((b) =>
+      Matter.Bodies.rectangle(
+        Math.min(
+          Math.max(200, Math.random() * c.clientWidth),
+          c.clientWidth - 200,
+        ),
+        -50,
+        b.width,
+        b.height,
+        {
+          collisionFilter: { mask: defaultCategory },
+          restitution: 0.3,
+          frictionAir: 0.02,
+          render: {
+            sprite: {
+              texture: b.src,
+              xScale: 1,
+              yScale: 1,
+            },
+          },
+        },
+      ),
+    );
+
+    Matter.Composite.add(engine.world, boxes);
+  }
+
+  groups.forEach((group) => {
+    const link = document.querySelector(`.link#${group}`);
+    link?.addEventListener("click", () =>
+      displayBoxes(group, container as HTMLElement),
+    );
+  });
 }
