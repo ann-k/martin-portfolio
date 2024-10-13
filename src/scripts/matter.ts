@@ -5,6 +5,10 @@ export function doIt() {
   if (!container) return;
 
   const groundThickness = 60;
+
+  const defaultCategory = 0x0001;
+  const fakeElementsCategory = 0x0002;
+
   const engine = Matter.Engine.create();
   const runner = Matter.Runner.create();
 
@@ -19,8 +23,12 @@ export function doIt() {
     },
   });
 
-  const boxA = Matter.Bodies.rectangle(400, 200, 80, 80);
-  const boxB = Matter.Bodies.rectangle(450, 50, 80, 80);
+  const boxA = Matter.Bodies.rectangle(400, 200, 80, 80, {
+    collisionFilter: { mask: defaultCategory },
+  });
+  const boxB = Matter.Bodies.rectangle(450, 50, 80, 80, {
+    collisionFilter: { mask: defaultCategory },
+  });
   const ground = Matter.Bodies.rectangle(
     container.clientWidth / 2,
     container.clientHeight + groundThickness / 2,
@@ -59,7 +67,11 @@ export function doIt() {
         circleX + circleRadius,
         circleY + circleRadius,
         circleRadius,
-        { isStatic: true, render: { fillStyle: "transparent" } },
+        {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+          collisionFilter: { category: fakeElementsCategory },
+        },
       );
 
       circlesIdsByElements[socialId] = circleFake.id;
