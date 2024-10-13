@@ -66,7 +66,7 @@ export function doIt() {
       const circleFake = Matter.Bodies.circle(
         circleX + circleRadius,
         circleY + circleRadius,
-        circleRadius,
+        circleRadius + 12, // add 12 because matter js does not register click on the edges of bodies
         {
           isStatic: true,
           render: { fillStyle: "transparent" },
@@ -96,21 +96,31 @@ export function doIt() {
       stiffness: 0.2,
       render: { visible: true },
     },
+    collisionFilter: { mask: defaultCategory }, // so that it does not try to drag fake elements
   });
 
   // click socials (circle buttons)
-  Matter.Events.on(mouseConstraint, "mousedown", () => {
-    if (mouseConstraint.body) {
-      const clickedOn = mouseConstraint.body;
-      const elementId = Object.entries(circlesIdsByElements).find(
-        ([_, bodyId]) => bodyId === clickedOn.id,
-      )?.[0];
+  Matter.Events.on(mouseConstraint, "mousedown", (e) => {
+    const clickedMultiple =
+      Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
+        .length > 1;
+    if (clickedMultiple) return;
 
+    const clickedCircle = circles.find((circle) => {
+      return (
+        Matter.Query.point([circle], mouseConstraint.mouse.position).length ===
+        1
+      );
+    });
+
+    if (clickedCircle) {
+      const elementId = Object.entries(circlesIdsByElements).find(
+        ([_, bodyId]) => bodyId === clickedCircle.id,
+      )?.[0];
       const circleTg = document.querySelector(
         `#${elementId}`,
       ) as HTMLAnchorElement;
       if (!circleTg) return;
-
       circleTg.click();
     }
   });
