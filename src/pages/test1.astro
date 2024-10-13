@@ -39,6 +39,17 @@ const { locale = "en" } = Astro.props;
     background-color: #ededed;
   }
 
+  #physics-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
   .content {
     height: 100vh;
     overflow: auto;
@@ -130,6 +141,7 @@ const { locale = "en" } = Astro.props;
     line-height: 36px;
     text-decoration: none;
     color: inherit;
+    z-index: 1;
   }
 
   @media screen and (max-width: 648px) {
@@ -137,17 +149,6 @@ const { locale = "en" } = Astro.props;
       width: 70px;
       height: 70px;
     }
-  }
-
-  #physics-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
   }
 
   .box {

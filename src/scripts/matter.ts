@@ -44,7 +44,35 @@ export function doIt() {
     { isStatic: true },
   );
 
-  Matter.Composite.add(engine.world, [boxA, boxB, ground, leftWall, rightWall]);
+  const socialsIds = ["#ig", "#li", "#tg"];
+
+  const circles = socialsIds
+    .map((socialId) => {
+      const circleReal = document.querySelector(socialId);
+      if (!circleReal) return;
+      const { top: circleY, left: circleX } =
+        circleReal.getBoundingClientRect();
+      const circleWidth = circleReal.clientWidth;
+      const circleRadius = circleWidth / 2;
+      const circleFake = Matter.Bodies.circle(
+        circleX + circleRadius,
+        circleY + circleRadius,
+        circleRadius,
+        { isStatic: true, render: { fillStyle: "#d9d9d9" } },
+      );
+
+      return circleFake;
+    })
+    .filter((c) => !!c);
+
+  Matter.Composite.add(engine.world, [
+    boxA,
+    boxB,
+    ground,
+    leftWall,
+    rightWall,
+    ...circles,
+  ]);
 
   const mouse = Matter.Mouse.create(render.canvas);
   const mouseConstraint = Matter.MouseConstraint.create(engine, {
