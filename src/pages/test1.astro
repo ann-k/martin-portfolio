@@ -1,7 +1,11 @@
 ---
 import Document from "../layouts/Document.astro";
 
-import { Physics } from "../components/PhysicsReact";
+import Physics from "../components/Physics.astro";
+
+interface Props {
+  locale?: "ru" | "en";
+}
 
 const { locale = "en" } = Astro.props;
 ---
@@ -286,5 +290,5 @@ const { locale = "en" } = Astro.props;
 </style>
 
 <Document title={locale === "en" ? "Martin Lezhenin" : "Мартин Леженин"}>
-  <Physics client:only="react" locale={locale} />
+  <Physics locale={locale} />
 </Document>

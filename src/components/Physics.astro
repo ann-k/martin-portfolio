@@ -1,0 +1,99 @@
+---
+import Matter from "matter-js";
+// import { Project } from "./Project";
+
+// const groups = ["designer", "artist", "curator", "director", "studio"] as const;
+
+// type Group = (typeof groups)[number];
+
+interface Props {
+  locale?: "ru" | "en";
+}
+
+const { locale = "en" } = Astro.props;
+
+console.log("server staff");
+---
+
+<script>
+  function doIt() {
+    console.log("client staff");
+  }
+
+  window.addEventListener("DOMContentLoaded", () => doIt());
+</script>
+<main>
+  <!-- class={typeof activeProject === "number" ? "has-dialog" : undefined} -->
+
+  <!-- {
+    typeof activeProject === "number" && (
+      <Project activeProject={activeProject} onClose={onProjectModalClose} />
+    )
+  } -->
+
+  <!-- {
+    Array.from(Array(4).keys()).map((n) => (
+      <button class="box" id={`box-${n}`} onclick={() => onProjectClick(n)} />
+    ))
+  } -->
+
+  <div id="physics-container"></div>
+
+  <div class="content">
+    {
+      locale === "en" ? (
+        <div>
+          Martin Lezhenin is a{" "}
+          <a class="link" role="button">
+            {/* onclick={() => onGroupClick("designer")} */}
+            graphic designer
+          </a>
+          , {/* onclick={() => onGroupClick("artist")} */}
+          <a class="link" role="button">
+            media artist
+          </a>
+          ,{" "}
+          <a class="link" role="button">
+            {/* onclick={() => onGroupClick("curator")} */}
+            curator
+          </a>
+          ,{" "}
+          <a class="link" role="button">
+            {/* onclick={() => onGroupClick("director")} */}
+            art director
+          </a>
+          , teacher, creative director, brand director, and founder of the
+          creative bureau{" "}
+          <a class="link" role="button">
+            {/* onclick={() => onGroupClick("studio")} */}
+            Whale Studio
+          </a>
+          .
+        </div>
+      ) : (
+        <div>
+          Мартин Леженин — <a class="link">графический дизайнер</a>,{" "}
+          <a class="link">медиахудожник</a>, куратор, арт-директор, педагог,
+          креативный директор, бренд-директор, и основатель креативного бюро
+          Whale Studio.
+        </div>
+      )
+    }
+
+    <div class="footer">
+      <div class="footer-item" id="email">
+        <a class="link" href="mailto:martin@lezhen.in"> martin@lezhen.in </a>
+      </div>
+      <div class="footer-item" id="cta">
+        {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ?"}
+      </div>
+      <div class="footer-item" id="socials-group">
+        <a class="social" href="https://www.instagram.com/lezhenim/">IG</a>
+        <a class="social" href="https://www.linkedin.com/in/martinlezhenin/"
+          >LI</a
+        >
+        <a class="social" href="https://www.t.me/votpravda">TG</a>
+      </div>
+    </div>
+  </div>
+</main>
