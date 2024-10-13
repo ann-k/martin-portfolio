@@ -52,6 +52,9 @@ const { locale = "en" } = Astro.props;
 
   .content {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow: auto;
     box-sizing: border-box;
     padding: 50px;
@@ -103,7 +106,7 @@ const { locale = "en" } = Astro.props;
   }
 
   @media screen and (max-width: 1479px) {
-    #email {
+    #email-container {
       order: 2;
     }
     #cta {
@@ -120,7 +123,7 @@ const { locale = "en" } = Astro.props;
       width: 100%;
     }
 
-    #email {
+    #email-container {
       order: 3;
     }
     #socials-group {
