@@ -6,6 +6,7 @@ export function doIt() {
 
   const groundThickness = 60;
   const engine = Matter.Engine.create();
+  const runner = Matter.Runner.create();
 
   const render = Matter.Render.create({
     element: container as HTMLElement,
@@ -44,11 +45,11 @@ export function doIt() {
     { isStatic: true },
   );
 
-  const socialsIds = ["#ig", "#li", "#tg"];
+  const circlesIdsByElements: Record<string, number> = {};
 
-  const circles = socialsIds
+  const circles = ["ig", "li", "tg"]
     .map((socialId) => {
-      const circleReal = document.querySelector(socialId);
+      const circleReal = document.querySelector(`#${socialId}`);
       if (!circleReal) return;
       const { top: circleY, left: circleX } =
         circleReal.getBoundingClientRect();
@@ -58,8 +59,10 @@ export function doIt() {
         circleX + circleRadius,
         circleY + circleRadius,
         circleRadius,
-        { isStatic: true, render: { fillStyle: "#d9d9d9" } },
+        { isStatic: true, render: { fillStyle: "transparent" } },
       );
+
+      circlesIdsByElements[socialId] = circleFake.id;
 
       return circleFake;
     })
@@ -82,10 +85,27 @@ export function doIt() {
       render: { visible: true },
     },
   });
+
+  // click socials (circle buttons)
+  Matter.Events.on(mouseConstraint, "mousedown", () => {
+    if (mouseConstraint.body) {
+      const clickedOn = mouseConstraint.body;
+      const elementId = Object.entries(circlesIdsByElements).find(
+        ([_, bodyId]) => bodyId === clickedOn.id,
+      )?.[0];
+
+      const circleTg = document.querySelector(
+        `#${elementId}`,
+      ) as HTMLAnchorElement;
+      if (!circleTg) return;
+
+      circleTg.click();
+    }
+  });
+
   Matter.Composite.add(engine.world, mouseConstraint);
 
   Matter.Render.run(render);
-  const runner = Matter.Runner.create();
   Matter.Runner.run(runner, engine);
 
   function handleResize(c: HTMLElement) {
