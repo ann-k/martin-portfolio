@@ -1,42 +1,16 @@
 ---
-import Matter from "matter-js";
-// import { Project } from "./Project";
-
-// const groups = ["designer", "artist", "curator", "director", "studio"] as const;
-
-// type Group = (typeof groups)[number];
-
 interface Props {
   locale?: "ru" | "en";
 }
 
 const { locale = "en" } = Astro.props;
-
-console.log("server staff");
 ---
 
 <script>
-  function doIt() {
-    console.log("client staff");
-  }
-
+  import { doIt } from "../scripts/matter";
   window.addEventListener("DOMContentLoaded", () => doIt());
 </script>
 <main>
-  <!-- class={typeof activeProject === "number" ? "has-dialog" : undefined} -->
-
-  <!-- {
-    typeof activeProject === "number" && (
-      <Project activeProject={activeProject} onClose={onProjectModalClose} />
-    )
-  } -->
-
-  <!-- {
-    Array.from(Array(4).keys()).map((n) => (
-      <button class="box" id={`box-${n}`} onclick={() => onProjectClick(n)} />
-    ))
-  } -->
-
   <div id="physics-container"></div>
 
   <div class="content">
