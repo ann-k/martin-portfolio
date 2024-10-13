@@ -100,7 +100,7 @@ export function doIt() {
   });
 
   // click socials (circle buttons)
-  Matter.Events.on(mouseConstraint, "mousedown", (e) => {
+  Matter.Events.on(mouseConstraint, "mousedown", () => {
     const clickedMultiple =
       Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
         .length > 1;
@@ -122,6 +122,23 @@ export function doIt() {
       ) as HTMLAnchorElement;
       if (!circleTg) return;
       circleTg.click();
+    }
+  });
+
+  // change cursor when hovering circles
+  Matter.Events.on(runner, "tick", () => {
+    const hoveredCircles =
+      Matter.Query.point(circles, mouseConstraint.mouse.position).length === 1;
+
+    if (hoveredCircles) {
+      const hoveredMultiple =
+        Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
+          .length > 1;
+      if (hoveredMultiple) return;
+
+      (container as HTMLElement).style.cursor = "pointer";
+    } else {
+      (container as HTMLElement).style.cursor = "inherit";
     }
   });
 
