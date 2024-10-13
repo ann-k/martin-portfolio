@@ -92,12 +92,12 @@ export function doIt() {
       emailReal.clientHeight,
       {
         isStatic: true,
-        // render: { fillStyle: "transparent" },
+        render: { fillStyle: "transparent" },
         collisionFilter: { category: fakeElementsCategory },
       },
     );
 
-    // circlesIdsByElements[socialId] = circleFake.id;
+    fakeBodiesIdsByElements.email = emailFake.id;
 
     return emailFake;
   };
@@ -123,33 +123,33 @@ export function doIt() {
     collisionFilter: { mask: defaultCategory }, // so that it does not try to drag fake elements
   });
 
-  // click socials (circle buttons)
+  // click fake bodies
   Matter.Events.on(mouseConstraint, "mousedown", () => {
     const clickedMultiple =
       Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
         .length > 1;
     if (clickedMultiple) return;
 
-    const clickedCircle = circles.find((circle) => {
+    const clickedFake = fakes.find((circle) => {
       return (
         Matter.Query.point([circle], mouseConstraint.mouse.position).length ===
         1
       );
     });
 
-    if (clickedCircle) {
+    if (clickedFake) {
       const elementId = Object.entries(fakeBodiesIdsByElements).find(
-        ([_, bodyId]) => bodyId === clickedCircle.id,
+        ([_, bodyId]) => bodyId === clickedFake.id,
       )?.[0];
-      const circleTg = document.querySelector(
+      const elementReal = document.querySelector(
         `#${elementId}`,
       ) as HTMLAnchorElement;
-      if (!circleTg) return;
-      circleTg.click();
+      if (!elementReal) return;
+      elementReal.click();
     }
   });
 
-  // change cursor when hovering circles
+  // change cursor when hovering fake bodies
   Matter.Events.on(runner, "tick", () => {
     const hoveredFakes =
       Matter.Query.point(fakes, mouseConstraint.mouse.position).length === 1;
