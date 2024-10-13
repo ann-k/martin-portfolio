@@ -55,9 +55,10 @@ const { locale = "en" } = Astro.props;
     }
 
     <div class="footer">
-      <div class="footer-item" id="email">
-        <a class="link" href="mailto:martin@lezhen.in"> martin@lezhen.in </a>
-      </div>
+      <a class="footer-item link" href="mailto:martin@lezhen.in" id="email"
+        >martin@lezhen.in</a
+      >
+
       <div class="footer-item" id="cta">
         {locale === "en" ? "LET'S WORK" : "ПОРАБОТАЕМ?"}
       </div>

@@ -80,13 +80,37 @@ export function doIt() {
     })
     .filter((c) => !!c);
 
+  const getEmailFake = () => {
+    const emailReal = document.querySelector("#email");
+    if (!emailReal) return;
+    const { top: emailY, left: emailX } = emailReal.getBoundingClientRect();
+
+    const emailFake = Matter.Bodies.rectangle(
+      emailX + emailReal.clientWidth / 2,
+      emailY + emailReal.clientHeight / 2,
+      emailReal.clientWidth,
+      emailReal.clientHeight,
+      {
+        isStatic: true,
+        // render: { fillStyle: "transparent" },
+        collisionFilter: { category: fakeElementsCategory },
+      },
+    );
+
+    // circlesIdsByElements[socialId] = circleFake.id;
+
+    return emailFake;
+  };
+
+  const fakes = [...circles, getEmailFake()].filter((b) => !!b);
+
   Matter.Composite.add(engine.world, [
     boxA,
     boxB,
     ground,
     leftWall,
     rightWall,
-    ...circles,
+    ...fakes,
   ]);
 
   const mouse = Matter.Mouse.create(render.canvas);
