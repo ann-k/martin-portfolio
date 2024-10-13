@@ -53,7 +53,7 @@ export function doIt() {
     { isStatic: true },
   );
 
-  const circlesIdsByElements: Record<string, number> = {};
+  const fakeBodiesIdsByElements: Record<string, number> = {};
 
   const circles = ["ig", "li", "tg"]
     .map((socialId) => {
@@ -74,7 +74,7 @@ export function doIt() {
         },
       );
 
-      circlesIdsByElements[socialId] = circleFake.id;
+      fakeBodiesIdsByElements[socialId] = circleFake.id;
 
       return circleFake;
     })
@@ -138,7 +138,7 @@ export function doIt() {
     });
 
     if (clickedCircle) {
-      const elementId = Object.entries(circlesIdsByElements).find(
+      const elementId = Object.entries(fakeBodiesIdsByElements).find(
         ([_, bodyId]) => bodyId === clickedCircle.id,
       )?.[0];
       const circleTg = document.querySelector(
@@ -151,10 +151,10 @@ export function doIt() {
 
   // change cursor when hovering circles
   Matter.Events.on(runner, "tick", () => {
-    const hoveredCircles =
-      Matter.Query.point(circles, mouseConstraint.mouse.position).length === 1;
+    const hoveredFakes =
+      Matter.Query.point(fakes, mouseConstraint.mouse.position).length === 1;
 
-    if (hoveredCircles) {
+    if (hoveredFakes) {
       const hoveredMultiple =
         Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
           .length > 1;
