@@ -179,12 +179,15 @@ export function doIt() {
     collisionFilter: { mask: defaultCategory }, // so that it does not try to drag fake elements
   });
 
-  // click fake bodies
+  // click bodies
   Matter.Events.on(mouseConstraint, "mousedown", () => {
-    const clickedMultiple =
-      Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
-        .length > 1;
-    if (clickedMultiple) return;
+    const clickedBox =
+      Matter.Query.point(boxes, mouseConstraint.mouse.position).length > 0;
+
+    if (clickedBox) {
+      console.log("clicked box");
+      return;
+    }
 
     const clickedFake = fakes.find((circle) => {
       return (
@@ -205,7 +208,7 @@ export function doIt() {
     }
   });
 
-  // change cursor when hovering fake bodies
+  // change cursor when hovering bodies
   Matter.Events.on(runner, "tick", () => {
     const hovered = Matter.Query.point(
       engine.world.bodies,
