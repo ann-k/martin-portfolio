@@ -185,7 +185,12 @@ export function doIt() {
       Matter.Query.point(boxes, mouseConstraint.mouse.position).length > 0;
 
     if (clickedBox) {
-      console.log("clicked box");
+      (document.querySelector(".dialog-layer") as HTMLElement).classList.add(
+        "visible",
+      );
+      (document.querySelector(".dialog-backdrop") as HTMLElement).classList.add(
+        "visible",
+      );
       return;
     }
 

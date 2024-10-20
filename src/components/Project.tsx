@@ -1,8 +1,10 @@
 export function Project({
   onClose,
-  activeProject,
+  project,
+  group,
 }: {
-  activeProject: number;
+  project: number;
+  group: "artist";
   onClose: () => void;
 }) {
   return (
@@ -11,7 +13,7 @@ export function Project({
       <div className="dialog-layer">
         <div role="dialog" aria-labelledby="dialog-label" aria-modal="true">
           <div>
-            <img src={`/images/${activeProject}.jpeg`} />
+            <img src={`/images/${group}/${project}.jpeg`} />
           </div>
 
           <div className="dialog-description">
