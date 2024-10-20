@@ -207,19 +207,12 @@ export function doIt() {
 
   // change cursor when hovering fake bodies
   Matter.Events.on(runner, "tick", () => {
-    const hoveredFakes =
-      Matter.Query.point(fakes, mouseConstraint.mouse.position).length === 1;
+    const hovered = Matter.Query.point(
+      engine.world.bodies,
+      mouseConstraint.mouse.position,
+    ).length;
 
-    if (hoveredFakes) {
-      const hoveredMultiple =
-        Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position)
-          .length > 1;
-      if (hoveredMultiple) return;
-
-      (container as HTMLElement).style.cursor = "pointer";
-    } else {
-      (container as HTMLElement).style.cursor = "inherit";
-    }
+    (container as HTMLElement).style.cursor = hovered ? "pointer" : "inherit";
   });
 
   Matter.Composite.add(engine.world, mouseConstraint);
