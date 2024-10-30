@@ -259,7 +259,11 @@ export function Physics({ locale = "en" }: { locale: "ru" | "en" }) {
       className={typeof activeProject === "number" ? "has-dialog" : undefined}
     >
       {typeof activeProject === "number" && (
-        <Project activeProject={activeProject} onClose={onProjectModalClose} />
+        <Project
+          project={activeProject}
+          group="artist"
+          onClose={onProjectModalClose}
+        />
       )}
 
       {/* <div className="box" id="box-0">
