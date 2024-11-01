@@ -92,6 +92,7 @@ export function enableMatter() {
   });
 
   let boxes: Matter.Body[] = [];
+  let hasBoxesDisplayed = false;
   const ground = Matter.Bodies.rectangle(
     container.clientWidth / 2,
     container.clientHeight + groundThickness / 2,
@@ -99,6 +100,7 @@ export function enableMatter() {
     groundThickness,
     {
       isStatic: true,
+      render: { fillStyle: "green" },
     },
   );
   const leftWall = Matter.Bodies.rectangle(
@@ -251,8 +253,6 @@ export function enableMatter() {
   );
 
   function displayBoxes(group: Group, c: HTMLElement) {
-    Matter.Composite.remove(engine.world, boxes);
-
     const groupProjects = projects[group];
 
     boxes = groupProjects.map((b) =>
@@ -280,12 +280,40 @@ export function enableMatter() {
     );
 
     Matter.Composite.add(engine.world, boxes);
+
+    hasBoxesDisplayed = true;
+  }
+
+  function switchBoxes(group: Group, c: HTMLElement) {
+    Matter.Body.setPosition(
+      ground,
+      Matter.Vector.create(
+        c.clientWidth / 2,
+        c.clientHeight + groundThickness / 2 + 300,
+      ),
+    );
+
+    setTimeout(() => {
+      Matter.Composite.remove(engine.world, boxes);
+    }, 1000);
+
+    setTimeout(() => {
+      Matter.Body.setPosition(
+        ground,
+        Matter.Vector.create(
+          c.clientWidth / 2,
+          c.clientHeight + groundThickness / 2,
+        ),
+      );
+      displayBoxes(group, container as HTMLElement);
+    }, 1000);
   }
 
   groups.forEach((group) => {
     const link = document.querySelector(`.link#${group}`);
-    link?.addEventListener("click", () =>
-      displayBoxes(group, container as HTMLElement),
-    );
+    link?.addEventListener("click", () => {
+      if (hasBoxesDisplayed) switchBoxes(group, container as HTMLElement);
+      else displayBoxes(group, container as HTMLElement);
+    });
   });
 }
