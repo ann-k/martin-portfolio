@@ -1,6 +1,6 @@
 ---
 import Link from "./Link.astro";
-import { Project } from "./Project";
+import Project from "./Project.astro";
 
 interface Props {
   locale?: "ru" | "en";
@@ -85,5 +85,5 @@ const groups = {
     </div>
   </div>
 
-  <Project group="artist" project={1} onClose={() => {}} />
+  <Project />
 </main>
