@@ -68,7 +68,7 @@ const projects: Record<
   "brand-director": designerProjects,
 };
 
-export function doIt() {
+export function enableMatter() {
   const container = document.querySelector("#physics-container");
   if (!container) return;
 

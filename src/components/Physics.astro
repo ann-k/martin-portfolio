@@ -20,8 +20,21 @@ const groups = {
 ---
 
 <script>
-  import { doIt } from "../scripts/matter";
-  window.addEventListener("DOMContentLoaded", () => doIt());
+  import { enableMatter } from "../scripts/matter";
+
+  function handleCloseProject() {
+    document
+      .querySelector(".dialog-close-button")
+      ?.addEventListener("click", () => {
+        document.querySelector(".dialog-layer")?.classList.remove("visible");
+        document.querySelector(".dialog-backdrop")?.classList.remove("visible");
+      });
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    enableMatter();
+    handleCloseProject();
+  });
 </script>
 <main>
   <div id="physics-container"></div>
